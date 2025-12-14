@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./userpfp.css" />
+  </head>
+  <body>
+    <div class="user-profile">
+      <div class="user-info">
+        <div class="user-avatar">
+          <img
+            src="./img/testimonial-1.jpg"
+            alt="User Avatar"
+            id="user-avatar"
+          />
+          <button id="change-avatar-btn">Change Avatar</button>
+          <input type="file" id="avatar-input" style="display: none" />
+        </div>
+        <h2>Samrawit Hassen</h2>
+        <p>Addis Ababa</p>
+        <p>samsam@example.com</p>
+      </div>
+
+      <div class="user-form">
+        <h3>Update Your Profile</h3>
+        <form>
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" value="Samrawit Hassen" />
+
+          <label for="address">Address:</label>
+          <input type="text" id="address" name="address" value="Addis Ababa" />
+
+          <label for="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value="samsam@example.com"
+          />
+
+          <button type="submit" name="save-changes">Save Changes</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="comments-section">
+      <h3>Comments</h3>
+      <button id="show-comments-btn">View Comments</button>
+      <div class="comments-list" style="display: none">
+        <div class="comment">
+          <img src="./img/testimonial-2.jpg" alt="Commenter Avatar" />
+          <div class="comment-content">
+            <h4>Sami Abdisa</h4>
+            <p>Great profile! Keep up the good work.</p>
+            <p class="comment-date">2023-06-21</p>
+          </div>
+        </div>
+        <div class="comment">
+          <img src="./img/testimonial-3.jpg" alt="Commenter Avatar" />
+          <div class="comment-content">
+            <h4>Michael Sahlu</h4>
+            <p>Awesome profile, John! Let's connect on LinkedIn.</p>
+            <p class="comment-date">2023-06-20</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const showCommentsBtn = document.getElementById("show-comments-btn");
+      const commentsList = document.querySelector(".comments-list");
+
+      showCommentsBtn.addEventListener("click", () => {
+        commentsList.style.display =
+          commentsList.style.display === "none" ? "block" : "none";
+      });
+    </script>
+  </body>
+</html>

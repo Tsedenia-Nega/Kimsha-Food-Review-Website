@@ -1,0 +1,232 @@
+/* User Profile Styles */
+.user-profile {
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  padding: 2rem;
+  padding-left: 10rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-info {
+  flex: 1;
+  text-align: center;
+}
+
+.user-info img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+.user-info h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.user-info p {
+  color: #666;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.user-form {
+  flex: 1;
+  margin-left: -5rem;
+}
+
+.user-form h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.user-form input {
+  display: block;
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.user-form button {
+  background-color: #ffaf00;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.user-form button:hover {
+  background-color: #ffaf00;
+}
+
+/* Comments Section Styles */
+.comments-section {
+  margin-top: 2rem;
+  background-color: #f5f5f5;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.comments-section h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.comments-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.comment {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+#user-avatar {
+  margin-bottom: 40px;
+}
+
+.comment img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+}
+
+.comment-content h4 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.comment-content p {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.comment-date {
+  color: #999;
+  font-size: 0.9rem;
+}
+
+#show-comments-btn {
+  background-color: #ffaf00;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+#show-comments-btn:hover {
+  background-color: #ffaf00;
+}
+
+#change-avatar-btn {
+  background-color: #ffaf00;
+
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin-left: -100px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+#logout {
+  background-color: #ffaf00;
+
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin-left: 1170px;
+  cursor: pointer;
+}
+
+/* Small Devices (Smartphones) */
+@media (max-width: 576px) {
+  .user-profile {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .user-info {
+    text-align: center;
+  }
+
+  .user-avatar {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .change-avatar-btn {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}
+
+/* Medium Devices (Tablets) */
+@media (min-width: 577px) and (max-width: 768px) {
+  .user-profile {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .user-info {
+    text-align: center;
+  }
+
+  .user-avatar {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .change-avatar-btn {
+    font-size: 13px;
+    padding: 7px 14px;
+  }
+}
+
+/* Large Devices (Desktops) */
+@media (min-width: 769px) {
+  .user-profile {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .user-info {
+    text-align: left;
+  }
+
+  .user-avatar {
+    margin-right: 30px;
+    margin-bottom: 0;
+  }
+
+  .change-avatar-btn {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+}

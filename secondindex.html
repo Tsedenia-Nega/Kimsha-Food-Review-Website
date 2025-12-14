@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category</title>
+    <link rel="stylesheet" href="second.css">
+    <style>
+  
+.food-item {
+  /* display: inline-block; */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 100px;
+  gap: 10px;
+  width: 33.3%; /* Set the width to 33.33% to display three items in one line */
+  
+
+
+
+
+
+ 
+}
+
+.food-item {
+  /* Styles for each food item */
+}
+
+.info-container {
+  flex-grow: 2;
+  padding-left: 30px;
+  padding-top: 0px;
+  margin-top: 1px;
+  /* margin-top: 5px; Adjust the margin-top value as needed */
+}
+
+.small-image{
+  width: 300px;
+  height: 300px;
+}
+  
+
+</style>
+<script src="second.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <script>
+    
+   
+    $(document).ready(function() {
+    // Function to fetch and display data based on selected category
+    function fetchFoodData(category) {
+        $.ajax({
+            url: 'fetch_food.php',
+            method: 'POST',
+            data: { category: category },
+            success: function(response) {
+                var foodData = JSON.parse(response);
+                var dynamicContent = $('.dynamic-content');
+                dynamicContent.empty();
+
+                if (foodData.length > 0) {
+                    $.each(foodData, function(index, food) {
+                        var foodItem = `
+                            <div class="food-item">
+                                <div class="image-container">
+                                    <img src="${food.Image}" alt="${food.FoodName}" class="small-image">
+                                </div>
+                                <div class="info-container">
+                                    <h3>${food.FoodName}</h3>
+                                    <p><strong>Cost:</strong> $${food.Price}</p>
+                                    <p><strong>Restaurant:</strong> ${food.Restaurant}</p>
+                                              
+<p><a href="firstfood.php? foodid="${food.id}" class="see-more-link">See More</a></p>
+                                   
+                                </div>
+                            </div>
+                        `;
+                        dynamicContent.append(foodItem);
+                    });
+
+                    // Event handler for "See More" link
+                    $('.see-more-link').click(function(e) {
+                        e.preventDefault();
+                        var index = $(this).data('index');
+                        var additionalInfo = $('.food-item').eq(index).find('.additional-info');
+                        additionalInfo.slideToggle();
+                    });
+                } else {
+                    dynamicContent.html('<p>No food items found.</p>');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
+    
+   
+
+    // Event handler for category selection
+    $('.category-list a').click(function(e) {
+        e.preventDefault();
+        $('.category-list a').removeClass('active');
+        $(this).addClass('active');
+        var category = $(this).data('category');
+        fetchFoodData(category);
+    });
+
+    // Initial fetch for 'all' category
+    fetchFoodData('all');
+});
+</script>
+</head>
+<body>
+     <h1 class="categori">Categories</h1>
+     <div class="category-list">
+  <ul>
+    <li><a href="#" data-category="all" class="active">All</a></li>
+    <li><a href="#" data-category="fasting">Fasting</a></li>
+    <li><a href="#" data-category="non-fasting">Non-Fasting</a></li> 
+  </ul>
+</div>
+   <div class="image-description-layouts">
+    <div class="dynamic-content"></div>
+  
+</div>
+ <!-- <div class="image-description-layouts">
+  <div class="image-description-layout" data-category="fasting">
+    <div class="image-item">
+      <img src="istockphoto-869665986-612x612-removebg-preview 1 (1).png" alt="Image 1">
+      <div class="see-more">
+        <i class="fas fa-chevron-right"></i>
+      </div> -->
+    <!-- </div>
+    <div class="description-content">
+      <h2 class="description-title">Enjera Be shero</h2>
+      <p class="description-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas porro voluptatem blanditiis non! Error dignissimos autem laborum assumenda, totam consequatur recusandae ad dolorem libero maiores corporis quia, eum quod facilis.. <a href="./first.html" target="_blank" class="see" > See More ></a></p> -->
+    <!-- </div>
+  </div>
+   </div>
+  </div> -->
+<!-- </div>
+ <div class="image-description-layouts">
+  <div class="image-description-layout"  data-category="non-fasting">
+    <div class="image-item">
+      <img src="pizza-png-12 1 (1).png" alt="Image 1">
+      <div class="see-more">
+        <i class="fas fa-chevron-right"></i>
+      </div>
+    </div>
+    <div class="description-content">
+      <h2 class="description-title">pizza</h2>
+      <p class="description-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam voluptatem totam sint maiores voluptate quas dolorem laudantium iure vero ullam, odio ab rem doloremque animi eveniet? Repellat libero delectus molestias!<a href="./first.html" class="see" target="_blank"> See More ></a></p> -->
+    <!-- </div>
+  </div>
+   </div>
+  </div>
+</div> -->
+<footer class="contact-sec">
+      <div class="footerdiv">
+        <div>
+          <h1>Contact us</h1>
+          <div>
+            <i class="fa-solid fa-location-dot"></i>123 Street, New York, USA
+          </div>
+          <div><i class="fa-solid fa-phone"></i>+2511142390</div>
+          <div><i class="fa-solid fa-envelope"></i> kimshabuds23@gmail.com</div>
+          <div>
+            <a><i class="fa-brands fa-facebook"></i></a>
+            <a><i class="fa-brands fa-instagram"></i></a>
+            <a><i class="fa-brands fa-twitter"></i></a>
+            <a><i class="fa-brands fa-linkedin"></i></a>
+          </div>
+        </div>
+        <div>
+          <h1>Company</h1>
+          <a href=""><p>About us</p></a>
+          <a href=""><p>Contact us</p></a>
+          <a href=""><p>Privacy policy</p></a>
+        </div>
+      </div>
+      <div class="secondfooter">
+        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+          &copy; <a class="border-bottom" href="#">Kimsha Buds</a>, All
+          Right Reserved 
+      </div>
+    </footer>
+<script src="second.js"></script>
+</body>
+</html>

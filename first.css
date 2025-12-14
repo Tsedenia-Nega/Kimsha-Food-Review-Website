@@ -1,0 +1,215 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+/* body {
+    background-image: url(./images/salad3.png);
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow-y: scroll;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+} */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    position: relative;
+    min-height: 100vh;
+    background-image: url(./images/salad3.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.content-wrapper {
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+}
+
+.food-details {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Rest of the CSS styles */
+.searchbarr {
+    margin-top: 10px;
+    margin-left: 300px;
+}
+
+#select {
+    margin-left: -7px;
+    border: rgb(232, 229, 11) solid;
+    background-color: rgb(232, 229, 11);
+    border-radius: 5px;
+    width: 150px;
+    height: 32px;
+}
+
+.searchbar {
+    width: 250px;
+    height: 30px;
+    border: rgb(232, 229, 11) solid 2px;
+    border-radius: 5px;
+}
+
+.food-details {
+    display: flex;
+    flex-direction: row;
+    padding: 40px;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin: 40px auto;
+    max-width: 800px;
+
+}
+
+.food-image img {
+    max-width: 300px;
+    height: auto;
+    border-radius: 8px;
+}
+
+.food-info {
+    margin-left: 30px;
+    flex-grow: 1;
+
+}
+
+.food-info h2 {
+    margin-top: 0;
+    font-size: 28px;
+    color: #333;
+}
+
+.restaurant-info p {
+    margin: 8px 0;
+    color: #666;
+}
+
+.price-info p {
+    margin: 8px 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    margin-top: 16px;
+}
+
+.rating span {
+    margin-right: 6px;
+    color: #ffa500;
+}
+
+.comments {
+    padding: 40px;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin: 40px auto;
+    max-width: 800px;
+}
+
+.comments h3 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.comment-input {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.comment-input textarea {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 16px;
+}
+
+.comment-input button {
+    margin-left: 10px;
+    padding: 10px 16px;
+    background-color: #FFAF00;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 16px;
+}
+
+.comment {
+    border: 3px solid #FFAF00;
+    padding: 16px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    background-color: #f5f5f5;
+}
+
+.comment p {
+    margin: 0;
+    color: #333;
+}
+
+.comment p:last-child {
+    margin-top: 8px;
+    color: #666;
+}
+
+.rating-container {
+    display: flex;
+    align-items: center;
+}
+
+.rating-stars {
+    color: #ccc;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.rating-stars i {
+    margin-right: 5px;
+}
+
+.rating-stars i.active {
+    color: #ffcc00;
+}
+
+.submit-btn {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #FFAF00;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.rating-count {
+    margin-top: 10px;
+}
+
+.ratethis {
+    padding: 20px;
+}

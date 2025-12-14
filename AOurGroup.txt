@@ -1,0 +1,10 @@
+Name                        ID
+Fiker Tewelde          UGR/0669/14
+Selam Alemayehu        UGR/2777/14
+Sena Abdisa            UGR/0254/14
+Tseday Teka            UGR/6741/14
+Tsedenia Nega          UGR/1550/14
+
+
+Run the project from card.php
+Make sure to change the servername, username and password on createKemesha, createUsers, createFood and db.php

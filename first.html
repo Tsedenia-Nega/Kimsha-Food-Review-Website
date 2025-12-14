@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./first.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="food-details">
+      <div class="food-image">
+        <img
+          src="./images/pasta.jpg"
+          id="image"
+          name="image"
+          alt="Food Image"
+        />
+      </div>
+      <div class="food-info">
+        <h2 id="food-name" name="food-name">Delicious Pasta</h2>
+        <p id="restaurant" name="restaurant">
+          Restaurant Name: The Burger Spot
+        </p>
+        <p id="place" name="place">Location: Lebu Medhanialem, Addis Ababa</p>
+        <p id="category" name="category">Category: Non-Fasting</p>
+        <p id="cost" name="cost">Cost: 509.99 Br.</p>
+        <p id="additional-info" name="additional-info">
+          Additional Info: Fresh ingredients, made to order
+        </p>
+
+        <div class="rating" style="margin-bottom: 10px">
+          <span> <h4>Current rating:</h4></span>
+          <span
+            ><div class="rating-count" style="margin-top: -0.5px">0</div></span
+          >
+        </div>
+        <div class="rating-container">
+          <div class="rating-stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <input type="hidden" name="rating" value="0" />
+          <button class="submit-btn">Submit</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="comments">
+      <h3>Comments</h3>
+      <div class="comment-input">
+        <textarea placeholder="Write your comment..."></textarea>
+        <button>Submit</button>
+      </div>
+      <div class="comment">
+        <p>Great pasta! Highly recommended.</p>
+        <p>- Selam Alemayehu</p>
+      </div>
+      <div class="comment">
+        <p>The best pasta I've ever had. Definitely coming back.</p>
+        <p>- Tseday Teka</p>
+      </div>
+    </div>
+    <script src="./first.js"></script>
+  </body>
+</html>
