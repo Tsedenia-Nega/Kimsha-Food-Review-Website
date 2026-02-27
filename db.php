@@ -4,7 +4,7 @@
 $servername = "localhost"; 
 $username = "root"; 
 $password = "";
-$dbname = "kemesha";git push -u origin main
+$dbname = "kemesha";
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {

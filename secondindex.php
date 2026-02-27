@@ -14,40 +14,109 @@ if (!isset($_SESSION['user_id'])) {
     <link rel="stylesheet" href="second.css">
     <style>
   
-.food-item {
-  /* display: inline-block; */
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding-left: 100px;
-  gap: 10px;
-  width: 33.3%; /* Set the width to 33.33% to display three items in one line */
-  
-
-
-
-
-
- 
+.dynamic-content {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: flex-start; /* Keeps items aligned to the left */
+    gap: 20px; 
+    padding: 20px;
+    width: 100%;
 }
 
 .food-item {
-  /* Styles for each food item */
+    display: flex;
+    flex-direction: column;
+    /* This is the magic line: */
+    flex: 0 0 calc(33.33% - 20px); 
+    
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    box-sizing: border-box; /* Ensures padding doesn't break the width */
+}
+
+.image-container {
+    width: 100%;
+    height: 200px; /* Fixed height for all images */
+    overflow: hidden;
+}
+
+.small-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Crops image to fit the box without stretching */
+}
+
+
+
+/* Full-width Yellow Navbar */
+.top-nav-actions {
+    background-color: #FFAF00; 
+    padding: 0 5%; /* Vertical padding handled by height */
+    height: 70px;  /* Fixed height for consistency */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 35px;
+    align-items: center; /* This centers text and images vertically */
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    display: flex;
+    align-items: center;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+/* User Icon Proportions */
+.user-avatar-nav img {
+    width: 35px; /* Slightly smaller to match text height */
+    height: 35px;
+    border-radius: 50%;
+    border: 2px solid #333;
+    object-fit: cover;
+    display: block; /* Removes bottom whitespace */
+}
+
+
+/* Category List Styling adjustment to look better under the yellow nav */
+.category-list {
+    margin-top: 20px;
+    text-align: center;
+}
+.image-container img {
+    width: 100%; /* Makes image fill the card width */
+    height: 200px; /* Fixed height for consistency */
+    object-fit: cover; /* Prevents stretching */
 }
 
 .info-container {
-  flex-grow: 2;
-  padding-left: 30px;
-  padding-top: 0px;
-  margin-top: 1px;
-  /* margin-top: 5px; Adjust the margin-top value as needed */
+    padding: 15px;
 }
 
-.small-image{
-  width: 300px;
-  height: 300px;
+
+/* Responsive fix: 2 items on tablets, 1 on phones */
+@media (max-width: 900px) {
+    .food-item { width: calc(50% - 20px); }
 }
-  
+@media (max-width: 600px) {
+    .food-item { width: 100%; }
+}
 
 </style>
 <script src="second.js"></script>
@@ -124,7 +193,27 @@ $(document).ready(function() {
 </script>
 </head>
 <body>
-     <h1 class="categori">Categories</h1>
+    <header class="top-nav-actions">
+        <div class="left-nav">
+            <a href="first_index.php" class="back-btn">
+                <!-- <i class="fa-solid fa-arrow-left"></i> Back -->
+            </a>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="first_index.php">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+            
+            <li class="user-avatar-nav">
+                <a href="fetchuse.php">
+                    <img src="./default-avatar.png" alt="User Avatar">
+                </a>
+            </li>
+        </ul>
+    </header>
+     
      <div class="category-list">
   <ul>
     <li><a href="#" data-category="all" class="active">All</a></li>

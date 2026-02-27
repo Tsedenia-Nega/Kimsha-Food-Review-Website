@@ -27,30 +27,65 @@ $result = $conn->query($sql);
     <link rel="stylesheet" href="./index.css">
     <link rel="stylesheet" href="./popup.css">
     <style>
-      nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #333;
-  color: #fff;
-  padding: 2.5rem;
-  position: relative; /* Added to create a positioning context */
+   /* Full-width Yellow Navbar */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #FFAF00; /* Yellow Theme */
+    color: #333;
+    padding: 0 5%;
+    height: 70px; /* Consistent height */
+    position: relative;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-/* User Avatar Styles */
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 35px;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+.nav-links li a:hover {
+    color: #000;
+}
+
+/* User Icon Proportions */
 .user-avatar {
-  display: flex;
-  align-items: center;
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
+    position: static; /* Removed absolute positioning to keep it in the row */
+    display: flex;
+    align-items: center;
 }
 
 .user-avatar img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 2px solid #333;
+    object-fit: cover;
 }
+
+.back-btn {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -86,9 +121,24 @@ $result = $conn->query($sql);
 </head>
 <body>
   <nav>
-  <div class="user-avatar">
-    <a href="fetchuse.php"><img src="./default-avatar.png" alt="User Avatar"></a>
-  </div>
+    <div class="left-nav">
+        <a href="first_index.php" class="back-btn">
+            <!-- <i class="fa-solid fa-arrow-left"></i> Back -->
+        </a>
+    </div>
+
+    <ul class="nav-links">
+        <li><a href="first_index.php">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+        
+        <li class="user-avatar">
+            <a href="fetchuse.php">
+                <img src="./default-avatar.png" alt="User Avatar">
+            </a>
+        </li>
+    </ul>
   </nav>
     <section class="home">
         <div class="left-content">
