@@ -18,7 +18,7 @@
         </div>
         <div>
           <ul class="main-menu">
-            <li><a href="./main.html">Home</a></li>
+            <li><a href="./index.php">Home</a></li>
             <li><a href="./about.html">About</a></li>
              <li><a href="./first_index.php">Foods</a></li>
             <li><a href="#services">Services</a></li>

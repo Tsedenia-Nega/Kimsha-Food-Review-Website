@@ -14,7 +14,7 @@ $result = $conn->query($sql);
 if ($result->num_rows == 1) {
     
     $_SESSION['username'] = $username;  
-    header("Location: index.html");  
+    header("Location: index.php");  
 } else {
     echo "Invalid username or password";
 }
