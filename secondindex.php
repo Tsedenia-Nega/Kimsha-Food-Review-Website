@@ -4,7 +4,6 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: card.php");
     exit();
 }
-// Note: We don't need require 'db.php' here because the data is loaded via AJAX from fetch_food.php
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,11 +32,6 @@ if (!isset($_SESSION['user_id'])) {
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             box-sizing: border-box;
             overflow: hidden;
-            transition: transform 0.2s;
-        }
-
-        .food-item:hover {
-            transform: translateY(-5px);
         }
 
         .image-container {
@@ -59,14 +53,12 @@ if (!isset($_SESSION['user_id'])) {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         .nav-links {
             display: flex;
             list-style: none;
             gap: 35px;
-            align-items: center;
             margin: 0;
             padding: 0;
         }
@@ -75,7 +67,6 @@ if (!isset($_SESSION['user_id'])) {
             text-decoration: none;
             color: #333;
             font-weight: 600;
-            font-size: 1rem;
         }
 
         .user-avatar-nav img {
@@ -83,7 +74,6 @@ if (!isset($_SESSION['user_id'])) {
             height: 35px;
             border-radius: 50%;
             border: 2px solid #333;
-            object-fit: cover;
         }
 
         .category-list {
@@ -95,22 +85,20 @@ if (!isset($_SESSION['user_id'])) {
             list-style: none;
             display: flex;
             justify-content: center;
-            gap: 20px;
-            padding: 0;
+            gap: 15px;
         }
 
         .category-list a {
             text-decoration: none;
             color: #333;
-            padding: 8px 16px;
-            border-radius: 20px;
+            padding: 8px 15px;
             border: 1px solid #FFAF00;
-            font-weight: bold;
+            border-radius: 20px;
         }
 
         .category-list a.active {
             background-color: #FFAF00;
-            color: white;
+            color: #fff;
         }
 
         .info-container { padding: 15px; }
@@ -126,52 +114,53 @@ if (!isset($_SESSION['user_id'])) {
                     url: 'fetch_food.php',
                     method: 'POST',
                     data: { category: category },
+                    dataType: 'json', // Tells jQuery to expect JSON and handle parsing
                     beforeSend: function() {
-                        $('.dynamic-content').html('<p>Loading delicious food...</p>');
+                        $('.dynamic-content').html('<p>Loading...</p>');
                     },
-                    success: function(response) {
-                        try {
-                            var foodData = JSON.parse(response);
-                            var dynamicContent = $('.dynamic-content');
-                            dynamicContent.empty();
+                    success: function(foodData) {
+                        var dynamicContent = $('.dynamic-content');
+                        dynamicContent.empty();
 
-                            if (foodData.length > 0) {
-                                $.each(foodData, function(index, food) {
-                                    // Use fallbacks for column names in case they are lowercase in DB
-                                    var img = food.Image || food.image;
-                                    var name = food.FoodName || food.foodname;
-                                    var price = food.Price || food.price;
-                                    var rest = food.Restaurant || food.restaurant;
+                        if (foodData && foodData.length > 0) {
+                            $.each(foodData, function(index, food) {
+                                // Match the exact keys from your log: FoodName, Image, Price, etc.
+                                var img   = food.Image;
+                                var name  = food.FoodName;
+                                var price = food.Price || "N/A";
+                                var rest  = food.Restaurant || "Unknown";
+                                var id    = food.id;
 
-                                    var foodItem = `
-                                        <div class="food-item">
-                                            <div class="image-container">
-                                                <img src="${img}" alt="${name}" class="small-image">
-                                            </div>
-                                            <div class="info-container">
-                                                <h3>${name}</h3>
-                                                <p><strong>Cost:</strong> ${price} br.</p>
-                                                <p><strong>Restaurant:</strong> ${rest}</p>
-                                                <p><a href="#" class="see-more-link" data-foodid="${food.id}">See More</a></p>
-                                            </div>
-                                        </div>`;
-                                    dynamicContent.append(foodItem);
+                                var foodItem = `
+                                    <div class="food-item">
+                                        <div class="image-container">
+                                            <img src="${img}" alt="${name}" class="small-image" onerror="this.src='default-food.png'">
+                                        </div>
+                                        <div class="info-container">
+                                            <h3>${name}</h3>
+                                            <p><strong>Cost:</strong> ${price} br.</p>
+                                            <p><strong>Restaurant:</strong> ${rest}</p>
+                                            <p><a href="#" class="see-more-link" data-foodid="${id}">See More</a></p>
+                                        </div>
+                                    </div>`;
+                                dynamicContent.append(foodItem);
+                            });
+
+                            // Handle See More Click
+                            $('.see-more-link').click(function(e) {
+                                e.preventDefault();
+                                var foodid = $(this).data('foodid');
+                                $.post('set_foodid.php', { foodid: foodid }, function() {
+                                    window.location.href = 'firstfood.php';
                                 });
-
-                                $('.see-more-link').click(function(e) {
-                                    e.preventDefault();
-                                    var foodid = $(this).data('foodid');
-                                    $.post('set_foodid.php', { foodid: foodid }, function() {
-                                        window.location.href = 'firstfood.php';
-                                    });
-                                });
-                            } else {
-                                dynamicContent.html('<p>No food items found in this category.</p>');
-                            }
-                        } catch (e) {
-                            console.error("Error parsing JSON:", response);
-                            $('.dynamic-content').html('<p>Error loading food items.</p>');
+                            });
+                        } else {
+                            dynamicContent.html('<p>No food items found.</p>');
                         }
+                    },
+                    error: function(xhr) {
+                        $('.dynamic-content').html('<p>Error: Could not load data from server.</p>');
+                        console.log(xhr.responseText);
                     }
                 });
             }
@@ -190,13 +179,11 @@ if (!isset($_SESSION['user_id'])) {
 <body>
     <header class="top-nav-actions">
         <div class="left-nav">
-            <a href="first_index.php" class="back-btn" style="color:#333; text-decoration:none; font-weight:bold;">← Back</a>
+            <a href="first_index.php" style="text-decoration:none; color:#333; font-weight:bold;">← Back</a>
         </div>
         <ul class="nav-links">
             <li><a href="first_index.php">Home</a></li>
             <li><a href="about.html">About</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#contact">Contact</a></li>
             <li class="user-avatar-nav">
                 <a href="fetchuse.php"><img src="./default-avatar.png" alt="User Avatar"></a>
             </li>
@@ -211,27 +198,10 @@ if (!isset($_SESSION['user_id'])) {
         </ul>
     </div>
 
-    <div class="image-description-layouts">
-        <div class="dynamic-content"></div>
-    </div>
+    <div class="dynamic-content"></div>
 
-    <footer class="contact-sec" style="margin-top: 50px; background: #333; color: white; padding: 40px 5%;">
-        <div class="footerdiv" style="display: flex; justify-content: space-between;">
-            <div>
-                <h1>Contact us</h1>
-                <p>Addis Ababa, Ethiopia</p>
-                <p>+2511142390</p>
-                <p>kimshabuds23@gmail.com</p>
-            </div>
-            <div>
-                <h1>Company</h1>
-                <p><a href="about.html" style="color:white;">About us</a></p>
-                <p><a href="privacy.html" style="color:white;">Privacy policy</a></p>
-            </div>
-        </div>
-        <div style="text-align: center; margin-top: 20px; border-top: 1px solid #555; padding-top: 20px;">
-            &copy; Kimsha Buds, All Rights Reserved
-        </div>
+    <footer style="background:#333; color:#fff; padding:30px; margin-top:50px; text-align:center;">
+        <p>&copy; Kimsha Buds, All Rights Reserved</p>
     </footer>
 </body>
 </html>
