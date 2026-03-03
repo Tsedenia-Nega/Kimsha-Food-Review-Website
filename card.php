@@ -1,7 +1,16 @@
 <?php
+// 1. FORCING ERRORS TO SHOW (Fixes the blank 500 error screen)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start(); 
 
+// 2. LOAD DATABASE CONNECTION
+// Ensure your db.php uses getenv() for Railway variables!
 require 'db.php'; 
+
+// HANDLE SIGNUP
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['signup-submit'])) {
     $user = $_POST['signup-username'];
     $email = $_POST['signup-email'];
@@ -11,14 +20,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['signup-submit'])) {
     if ($pass !== $confirm_pass) {
         echo '<script>alert("Passwords do not match.");</script>';
     } else {
-
-        $conn = new mysqli($servername, $username, $password, $dbname);
-
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
+        // NOTE: Table name changed to lowercase 'users' to match your Railway database
+        // Also ensure column names (Username, Email, etc.) match your TablePlus casing exactly
+        $stmt = $conn->prepare("INSERT INTO users (Username, Email, Password, Address, Avatar) VALUES (?, ?, ?, NULL, NULL)");
+        
+        if ($stmt === false) {
+            die("Prepare failed: " . $conn->error);
         }
 
-        $stmt = $conn->prepare("INSERT INTO Users (Username, Email, Password, Address, Avatar) VALUES (?, ?, ?, NULL, NULL)");
         $stmt->bind_param("sss", $user, $email, $pass);
 
         if ($stmt->execute()) {
@@ -27,24 +36,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['signup-submit'])) {
         } else {
             echo '<script>alert("Error: ' . $stmt->error . '");</script>';
         }
-
         $stmt->close();
-        $conn->close();
     }
 }
 
-// Handle login 
+// HANDLE LOGIN 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login-submit'])) {
     $login_user = $_POST['login-username'];
     $login_pass = $_POST['login-password'];
 
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
+    // NOTE: Table name changed to lowercase 'users'
+    $stmt = $conn->prepare("SELECT id, Username FROM users WHERE Username = ? AND Password = ?");
+    
+    if ($stmt === false) {
+        die("Prepare failed: " . $conn->error);
     }
 
-    $stmt = $conn->prepare("SELECT id, Username FROM Users WHERE Username = ? AND Password = ?");
     $stmt->bind_param("ss", $login_user, $login_pass);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -54,20 +61,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login-submit'])) {
         $_SESSION['user_id'] = $row['id'];
         $_SESSION['username'] = $row['Username'];
 
+        // Redirect based on user type
         if ($login_user === 'admin') {
-            header("Location: ./second-index.php");
-            exit();
+            header("Location: second-index.php");
         } else {
-
-            header("Location: ./first_index.php");
-            exit();
+            header("Location: first_index.php");
         }
+        exit();
     } else {
         echo '<script>alert("Login failed. Invalid username or password.");</script>';
     }
-
     $stmt->close();
-    $conn->close();
 }
 ?>
 
@@ -122,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login-submit'])) {
 
       .glassmorphic-card h2 {
         text-align: center;
-        color: #000;
+        color: #fff;
         margin-bottom: 20px;
       }
 
@@ -177,23 +181,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login-submit'])) {
           <h2>Login <span style="color: #ffaf00">Now</span></h2>
 
           <form id="login-form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-            <input
-              type="text"
-              placeholder="Username"
-              id="login-username"
-              name="login-username"
-              required
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              id="login-password"
-              name="login-password"
-              required
-            />
+            <input type="text" placeholder="Username" name="login-username" required />
+            <input type="password" placeholder="Password" name="login-password" required />
             <input type="submit" value="Login" name="login-submit" />
             <a href="#" class="create-account">Create a New Account</a>
-            
           </form>
         </div>
       </div>
@@ -206,37 +197,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login-submit'])) {
           <h2>Sign <span style="color: #ffaf00">Up</span></h2>
 
           <form id="signup-form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-            <input
-              type="text"
-              placeholder="Username"
-              id="signup-username"
-              name="signup-username"
-              required
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              id="signup-email"
-              name="signup-email"
-              required
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              
-              name="signup-password"
-              required
-            />
-            <input
-              type="password"
-              placeholder="Confirm Password"
-              id="signup-password"
-              name="confirm-password"
-              required
-            />
+            <input type="text" placeholder="Username" name="signup-username" required />
+            <input type="email" placeholder="Email" name="signup-email" required />
+            <input type="password" placeholder="Password" name="signup-password" required />
+            <input type="password" placeholder="Confirm Password" name="confirm-password" required />
             <input type="submit" value="Sign Up" name="signup-submit" />
             <a href="#" class="login-link">Already have an account? Login</a>
-            
           </form>
         </div>
       </div>
@@ -245,21 +211,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login-submit'])) {
     <script>
       const loginCard = document.getElementById("login-card");
       const signupCard = document.getElementById("signup-card");
-      const loginForm = document.getElementById("login-form");
-      const signupForm = document.getElementById("signup-form");
       const createAccountLink = document.querySelector(".create-account");
       const loginLink = document.querySelector(".login-link");
 
-      createAccountLink.addEventListener("click", () => {
+      createAccountLink.addEventListener("click", (e) => {
+        e.preventDefault();
         loginCard.style.display = "none";
         signupCard.style.display = "flex";
       });
 
-      loginLink.addEventListener("click", () => {
+      loginLink.addEventListener("click", (e) => {
+        e.preventDefault();
         signupCard.style.display = "none";
         loginCard.style.display = "flex";
       });
     </script>
-
   </body>
 </html>

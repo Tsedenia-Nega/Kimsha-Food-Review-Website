@@ -1,13 +1,20 @@
 <?php
-$servername = getenv('DB_SERVER') ?: 'localhost';
-$username   = getenv('DB_USER') ?: 'root';
-$password   = getenv('DB_PASS') ?: '';
-$dbname     = getenv('DB_NAME') ?: 'kemesha';
+// Use Railway Environment Variables, fall back to localhost for your computer
+$servername = getenv('MYSQLHOST') ?: getenv('DB_SERVER') ?: 'localhost';
+$username   = getenv('MYSQLUSER') ?: getenv('DB_USER') ?: 'root';
+$password   = getenv('MYSQLPASSWORD') ?: getenv('DB_PASS') ?: '';
+$dbname     = getenv('MYSQLDATABASE') ?: getenv('DB_NAME') ?: 'railway';
+$port       = getenv('MYSQLPORT') ?: getenv('DB_PORT') ?: 3306;
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+// Create connection including the PORT
+$conn = new mysqli($servername, $username, $password, $dbname, $port);
 
+// Check connection
 if ($conn->connect_error) {
-    // On Railway, this triggers the 500 error you saw
+    // This will show the specific error if the connection fails
     die("Connection failed: " . $conn->connect_error);
 }
+
+// Set charset to utf8mb4 for better compatibility
+$conn->set_charset("utf8mb4");
 ?>
