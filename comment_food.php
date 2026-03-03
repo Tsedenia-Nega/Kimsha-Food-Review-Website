@@ -1,10 +1,13 @@
 <?php
 session_start();
+
+// 1. Basic Security Check
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['foodid'])) {
     header("Location: card.php");
     exit();
 }
 
+// 2. Load the connection from db.php (This provides the $conn variable)
 require 'db.php';
 
 $food_id = $_SESSION['foodid'];
@@ -14,25 +17,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment'])) {
     $comment = trim($_POST['comment']);
 
     if (!empty($comment)) {
-        $comment = htmlspecialchars($comment); // sanitize input
+        // Sanitize the comment
+        $comment = htmlspecialchars($comment); 
 
-        $conn = new mysqli($servername, $username, $password, $dbname);
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        }
+        // 3. Use the $conn provided by db.php. (DO NOT use 'new mysqli' here)
+        // Note: Table name changed to lowercase 'foodusers' for Railway/Linux
+        $stmt = $conn->prepare("INSERT INTO foodusers (user_id, food_id, comment) VALUES (?, ?, ?)");
+        
+        if ($stmt) {
+            $stmt->bind_param("iis", $user_id, $food_id, $comment);
 
-        // Insert comment
-        $stmt = $conn->prepare("INSERT INTO FoodUsers (user_id, food_id, comment) VALUES (?, ?, ?)");
-        $stmt->bind_param("iis", $user_id, $food_id, $comment);
-
-        if ($stmt->execute()) {
-            $stmt->close();
-            $conn->close();
-            // Redirect back to firstfood.php
-            header("Location: firstfood.php");
-            exit();
+            if ($stmt->execute()) {
+                $stmt->close();
+                $conn->close();
+                // Redirect back to the food detail page
+                header("Location: firstfood.php");
+                exit();
+            } else {
+                die("Error executing query: " . $stmt->error);
+            }
         } else {
-            die("Error inserting comment: " . $stmt->error);
+            die("Error preparing statement: " . $conn->error);
         }
     } else {
         // Empty comment, just redirect back
