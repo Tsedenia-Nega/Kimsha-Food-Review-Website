@@ -1,22 +1,19 @@
 <?php
-// Force Railway to use Network addresses, not local sockets
-$servername = getenv('MYSQLHOST');
+// Railway provides these automatically if services are linked
+$servername = getenv('MYSQLHOST') ?: '127.0.0.1'; 
 $username   = getenv('MYSQLUSER');
 $password   = getenv('MYSQLPASSWORD');
 $dbname     = getenv('MYSQLDATABASE');
 $port       = getenv('MYSQLPORT') ?: 3306;
 
-// If these are empty, Railway isn't passing the variables to your app
-if (!$servername) {
-    die("Error: Railway Environment Variables are missing. Check your Variables tab!");
-}
+// THE KEY FIX: If servername is empty or localhost, force it to 127.0.0.1
+if ($servername === 'localhost') { $servername = '127.0.0.1'; }
 
-// THE FIX: The 5th parameter (port) is MANDATORY on Railway
+// Connection string
 $conn = new mysqli($servername, $username, $password, $dbname, $port);
 
 if ($conn->connect_error) {
+    // This will now show a 'Connection Refused' instead of 'No such file'
     die("Connection failed: " . $conn->connect_error);
 }
-
-$conn->set_charset("utf8mb4");
 ?>
