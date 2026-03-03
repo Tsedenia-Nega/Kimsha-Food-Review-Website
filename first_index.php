@@ -188,7 +188,7 @@ if (!$result) {
         $conn->close(); 
         ?>
         
-        <a href="./second-index.php" class="btn-circle" target="_blank">
+        <a href="./secondindex.php" class="btn-circle" target="_blank">
             <span class="see-more-text">See More</span>
             <img src="Frame 11.png" alt="Arrow Icon" class="arrow-icon">
         </a>
