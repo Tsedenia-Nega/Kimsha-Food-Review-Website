@@ -1,20 +1,22 @@
 <?php
-// Use Railway Environment Variables, fall back to localhost for your computer
-$servername = getenv('MYSQLHOST') ?: getenv('DB_SERVER') ?: 'localhost';
-$username   = getenv('MYSQLUSER') ?: getenv('DB_USER') ?: 'root';
-$password   = getenv('MYSQLPASSWORD') ?: getenv('DB_PASS') ?: '';
-$dbname     = getenv('MYSQLDATABASE') ?: getenv('DB_NAME') ?: 'railway';
-$port       = getenv('MYSQLPORT') ?: getenv('DB_PORT') ?: 3306;
+// Force Railway to use Network addresses, not local sockets
+$servername = getenv('MYSQLHOST');
+$username   = getenv('MYSQLUSER');
+$password   = getenv('MYSQLPASSWORD');
+$dbname     = getenv('MYSQLDATABASE');
+$port       = getenv('MYSQLPORT') ?: 3306;
 
-// Create connection including the PORT
+// If these are empty, Railway isn't passing the variables to your app
+if (!$servername) {
+    die("Error: Railway Environment Variables are missing. Check your Variables tab!");
+}
+
+// THE FIX: The 5th parameter (port) is MANDATORY on Railway
 $conn = new mysqli($servername, $username, $password, $dbname, $port);
 
-// Check connection
 if ($conn->connect_error) {
-    // This will show the specific error if the connection fails
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Set charset to utf8mb4 for better compatibility
 $conn->set_charset("utf8mb4");
 ?>
