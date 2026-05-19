@@ -1,80 +1,594 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>About Us - KimshaBuds</title>
-    <link rel="stylesheet" href="./about.css" />
+    <meta name="description" content="Learn about KimshaBuds – your guide to the finest local restaurants, hidden gems, and mouthwatering culinary experiences." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
+    <style>
+      /* ===== RESET ===== */
+      *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+
+      body {
+        font-family: 'Montserrat', Arial, sans-serif;
+        background-color: #f1f1f1;
+        color: #333;
+        overflow-x: hidden;
+      }
+
+      /* ===== UTILITIES ===== */
+      .highlight { color: #ffaf00; }
+
+      .badge {
+        display: inline-block;
+        background: rgba(255,175,0,0.13);
+        border: 1px solid rgba(255,175,0,0.4);
+        color: #cc8c00;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        padding: 6px 16px;
+        border-radius: 50px;
+        margin-bottom: 16px;
+      }
+
+      .section-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 38px;
+        font-weight: 800;
+        color: #222;
+        line-height: 1.2;
+        margin-bottom: 16px;
+      }
+
+      .body-text {
+        font-size: 16px;
+        line-height: 1.85;
+        color: #555;
+        margin-bottom: 16px;
+      }
+
+      /* ===== SCROLL REVEAL ===== */
+      .reveal {
+        opacity: 0;
+        transform: translateY(32px);
+        transition: opacity 0.7s ease, transform 0.7s ease;
+      }
+      .reveal.visible { opacity: 1; transform: translateY(0); }
+
+      /* ===== TOP NAV — matches index.php amber nav ===== */
+      .top-nav {
+        position: sticky;
+        top: 0;
+        z-index: 999;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #ffb733;
+        padding: 14px 40px;
+        box-shadow: 0 2px 10px rgba(255,175,0,0.35);
+      }
+
+      .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        background-color: #fff;
+        color: #333;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 700;
+        padding: 9px 22px;
+        border-radius: 50px;
+        letter-spacing: 0.4px;
+        transition: background-color 0.22s, transform 0.2s, box-shadow 0.22s;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+      }
+      .back-btn:hover {
+        background-color: #ffaf00;
+        color: #fff;
+        transform: translateX(-4px);
+        box-shadow: 0 5px 18px rgba(0,0,0,0.15);
+      }
+      .back-arrow { font-size: 17px; }
+
+      .nav-logo {
+        height: 44px;
+        object-fit: contain;
+      }
+
+      /* ===== HERO — bright, image background like index.php ===== */
+      .hero {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 40px;
+        padding: 90px 80px 80px;
+        background-color: rgba(0,0,0,0.45);
+        background-image: url('./image 110.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-blend-mode: darken;
+        min-height: 85vh;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-content {
+        flex: 1;
+        max-width: 520px;
+        color: #fff;
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero-badge {
+        display: inline-block;
+        background: rgba(255,175,0,0.22);
+        border: 1px solid rgba(255,175,0,0.5);
+        color: #ffaf00;
+        font-size: 12px; font-weight: 700;
+        letter-spacing: 1.5px;
+        padding: 7px 18px;
+        border-radius: 50px;
+        margin-bottom: 20px;
+        animation: fadeDown 0.6s ease both;
+      }
+
+      .hero-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 58px;
+        font-weight: 800;
+        color: #fff;
+        line-height: 1.1;
+        margin-bottom: 18px;
+        animation: fadeDown 0.7s ease 0.1s both;
+      }
+
+      .hero-subtitle {
+        font-size: 17px;
+        color: rgba(255,255,255,0.82);
+        line-height: 1.8;
+        margin-bottom: 42px;
+        animation: fadeDown 0.7s ease 0.2s both;
+      }
+
+      .hero-stats {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        animation: fadeDown 0.7s ease 0.3s both;
+      }
+      .stat { display: flex; flex-direction: column; gap: 4px; }
+      .stat-num { font-size: 30px; font-weight: 800; color: #ffaf00; line-height: 1; }
+      .stat-lbl { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px; }
+      .stat-div { width: 1px; height: 44px; background: rgba(255,255,255,0.25); }
+
+      /* Hero image side */
+      .hero-img-side {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero-glow {
+        position: absolute;
+        width: 340px; height: 340px;
+        background: radial-gradient(circle, rgba(255,175,0,0.28) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: pulseGlow 3.5s ease-in-out infinite;
+      }
+
+      .hero-food {
+        width: 360px;
+        max-width: 100%;
+        position: relative; z-index: 2;
+        animation: floatImg 6s ease-in-out infinite;
+        filter: drop-shadow(0 24px 50px rgba(0,0,0,0.45));
+      }
+
+      .float-tag {
+        position: absolute;
+        background: #ffaf00;
+        color: #fff;
+        font-size: 13px; font-weight: 700;
+        padding: 9px 16px;
+        border-radius: 50px;
+        box-shadow: 0 6px 20px rgba(255,175,0,0.4);
+        z-index: 3;
+        white-space: nowrap;
+      }
+      .ft-1 { top: 40px; right: 10px; animation: floatImg 4s ease-in-out infinite 0s; }
+      .ft-2 { bottom: 60px; left: 10px; animation: floatImg 4s ease-in-out infinite 2s; }
+
+      /* ===== MISSION — white background ===== */
+      .mission {
+        background: #fff;
+        padding: 100px 80px;
+      }
+      .two-col {
+        max-width: 1160px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 80px;
+      }
+      .two-col.flip { flex-direction: row-reverse; }
+      .col-text { flex: 1; }
+      .col-visual { flex: 1; }
+
+      .pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+      .pill {
+        background: rgba(255,175,0,0.1);
+        border: 1px solid rgba(255,175,0,0.3);
+        color: #333;
+        font-size: 13px; font-weight: 600;
+        padding: 8px 18px;
+        border-radius: 50px;
+        transition: background 0.22s, transform 0.2s;
+        cursor: default;
+      }
+      .pill:hover { background: rgba(255,175,0,0.22); transform: translateY(-2px); }
+
+      /* stacked food cards */
+      .stacked-cards { position: relative; height: 360px; }
+      .vcard {
+        position: absolute;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 16px 48px rgba(0,0,0,0.13);
+        transition: transform 0.35s ease;
+        border: 4px solid #fff;
+      }
+      .vcard:hover { transform: scale(1.04) translateY(-6px); }
+      .vcard img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .vcard-overlay {
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        background: linear-gradient(transparent, rgba(0,0,0,0.65));
+        color: #fff;
+        font-size: 13px; font-weight: 600;
+        padding: 26px 14px 12px;
+      }
+      .vc-main { width: 280px; height: 270px; top: 0; right: 0; }
+      .vc-side { width: 210px; height: 190px; bottom: 10px; left: 0; }
+
+      /* ===== VALUES — light gray ===== */
+      .values {
+        background: #f1f1f1;
+        padding: 100px 80px;
+        text-align: center;
+      }
+      .values-inner { max-width: 1160px; margin: 0 auto; }
+
+      .grid4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 22px;
+        margin-top: 50px;
+        text-align: left;
+      }
+      .vcard2 {
+        background: #fff;
+        border-radius: 18px;
+        padding: 34px 26px;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+        transition: transform 0.3s, box-shadow 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+      .vcard2::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #ffaf00, #ffbb33);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s;
+      }
+      .vcard2:hover { transform: translateY(-8px); box-shadow: 0 16px 36px rgba(0,0,0,0.1); }
+      .vcard2:hover::after { transform: scaleX(1); }
+      .vicon { font-size: 36px; margin-bottom: 16px; display: block; }
+      .vcard2 h3 { font-size: 17px; font-weight: 700; color: #222; margin-bottom: 10px; }
+      .vcard2 p { font-size: 14px; color: #666; line-height: 1.7; }
+
+      /* ===== EXPLORER — white ===== */
+      .explorer { background: #fff; padding: 100px 80px; }
+
+      .feat-list { list-style: none; margin-top: 26px; display: flex; flex-direction: column; gap: 14px; }
+      .feat-list li { display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 500; color: #333; }
+      .chk {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 26px; height: 26px;
+        background: #ffaf00; color: #fff;
+        border-radius: 50%; font-size: 11px; font-weight: 800; flex-shrink: 0;
+      }
+
+      .frame-wrap { position: relative; display: flex; justify-content: center; align-items: center; }
+      .img-frame {
+        width: 380px; height: 420px;
+        border-radius: 22px;
+        overflow: hidden;
+        box-shadow: 0 26px 65px rgba(0,0,0,0.13);
+        border: 5px solid #fff;
+        position: relative; z-index: 2;
+      }
+      .img-frame img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s; }
+      .img-frame:hover img { transform: scale(1.05); }
+      .orbit-ring {
+        position: absolute;
+        width: 310px; height: 310px;
+        border-radius: 50%;
+        border: 2px dashed rgba(255,175,0,0.3);
+        top: 50%; left: 50%;
+        transform: translate(-50%,-50%);
+        animation: rotateSlow 22s linear infinite;
+        z-index: 1;
+      }
+
+      /* ===== CTA — amber like index.php footer ===== */
+      .cta {
+        background: #ffaf00;
+        padding: 90px 80px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .cta-inner { position: relative; z-index: 2; }
+      .cta-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 46px; font-weight: 800;
+        color: #fff;
+        margin-bottom: 14px;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      }
+      .cta-sub { font-size: 16px; color: rgba(255,255,255,0.85); margin-bottom: 40px; }
+      .cta-btn {
+        display: inline-block;
+        background: #fff;
+        color: #333;
+        text-decoration: none;
+        font-size: 15px; font-weight: 700;
+        padding: 16px 46px;
+        border-radius: 50px;
+        box-shadow: 0 6px 24px rgba(0,0,0,0.13);
+        transition: background 0.22s, transform 0.2s, box-shadow 0.22s, color 0.22s;
+      }
+      .cta-btn:hover {
+        background: #333;
+        color: #ffaf00;
+        transform: translateY(-3px);
+        box-shadow: 0 12px 34px rgba(0,0,0,0.2);
+      }
+
+      /* decorative circles inside CTA */
+      .deco-ring {
+        position: absolute;
+        border-radius: 50%;
+        border: 1px solid rgba(255,255,255,0.2);
+        pointer-events: none;
+      }
+      .dr1 { width: 320px; height: 320px; top: -130px; left: -100px; }
+      .dr2 { width: 500px; height: 500px; bottom: -200px; right: -130px; }
+
+      /* ===== KEYFRAMES ===== */
+      @keyframes floatImg {
+        0%, 100% { transform: translateY(0); }
+        50%       { transform: translateY(-18px); }
+      }
+      @keyframes pulseGlow {
+        0%, 100% { opacity: 0.6; transform: scale(1); }
+        50%       { opacity: 1;   transform: scale(1.12); }
+      }
+      @keyframes fadeDown {
+        from { opacity: 0; transform: translateY(-16px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes rotateSlow {
+        from { transform: translate(-50%,-50%) rotate(0deg); }
+        to   { transform: translate(-50%,-50%) rotate(360deg); }
+      }
+
+      /* ===== RESPONSIVE ===== */
+      @media (max-width: 1024px) {
+        .hero-title { font-size: 44px; }
+        .hero-food  { width: 300px; }
+        .grid4 { grid-template-columns: repeat(2,1fr); }
+        .two-col, .two-col.flip { gap: 48px; }
+        .img-frame { width: 320px; height: 360px; }
+      }
+
+      @media (max-width: 768px) {
+        .top-nav { padding: 12px 20px; }
+        .hero { flex-direction: column; padding: 70px 28px 60px; min-height: auto; text-align: center; gap: 36px; }
+        .hero-stats { justify-content: center; }
+        .hero-food { width: 220px; }
+        .float-tag { display: none; }
+
+        .mission, .values, .explorer, .cta { padding: 70px 28px; }
+        .two-col, .two-col.flip { flex-direction: column; gap: 40px; }
+
+        .stacked-cards { height: 280px; }
+        .vc-main { width: 220px; height: 210px; }
+        .vc-side { width: 170px; height: 160px; }
+
+        .img-frame { width: 100%; height: 280px; }
+        .orbit-ring { display: none; }
+
+        .section-title { font-size: 28px; }
+        .cta-title { font-size: 32px; }
+      }
+
+      @media (max-width: 480px) {
+        .back-btn .btn-label { display: none; }
+        .hero-title { font-size: 28px; }
+        .stat-num { font-size: 24px; }
+        .grid4 { grid-template-columns: 1fr; }
+        .section-title { font-size: 24px; }
+        .cta-title { font-size: 26px; }
+        .cta-btn { padding: 13px 32px; font-size: 14px; }
+      }
+    </style>
   </head>
   <body>
-    <div class="about-section">
-      <div class="about-container">
-        <div class="about-image">
-          <img src="./burger_sandwich_PNG4135 2.png" alt="FoodieHub" />
-        </div>
-        <div class="about-content">
-          <h2>About Us</h2>
-          <p>
-            At Kimsha Buds, we are passionate about bringing you the best
-            culinary experiences. Our mission is to connect you with the finest
-            local restaurants, hidden gems, and mouthwatering recipes.
-          </p>
-          <p>
-            We believe that food is not just for sustenance, but a celebration
-            of life, culture, and community. Our team of food enthusiasts and
-            experts curate the most delicious and diverse offerings to satisfy
-            your cravings, whether you're in the mood for a gourmet meal or a
-            comforting home-cooked dish.
-          </p>
-          <a
-            href="javascript:void(0);"
-            id="backToHomeButton"
-            class="btn"
-            name="backtohome"
-          >
-            <i class="fa-sharp fa-solid fa-arrow-left fa-beat"></i>
-            Back to Home
-          </a>
+
+    <!-- ── TOP NAV (amber like index.php) ── -->
+    <nav class="top-nav">
+      <a href="javascript:void(0);" id="backToHomeButton" class="back-btn">
+        <span class="back-arrow">&#8592;</span>
+        <span class="btn-label">Back to Home</span>
+      </a>
+      <img src="./logo.png" alt="KimshaBuds" class="nav-logo" />
+    </nav>
+
+    <!-- ── HERO (background image like index.php) ── -->
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-badge">🍔 Our Story</div>
+        <h1 class="hero-title">Crafted With<br /><span class="highlight">Passion</span></h1>
+        <p class="hero-subtitle">Connecting food lovers with unforgettable culinary experiences — from hidden gems to gourmet classics.</p>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-num">500+</span>
+            <span class="stat-lbl">Restaurants</span>
+          </div>
+          <div class="stat-div"></div>
+          <div class="stat">
+            <span class="stat-num">10K+</span>
+            <span class="stat-lbl">Reviews</span>
+          </div>
+          <div class="stat-div"></div>
+          <div class="stat">
+            <span class="stat-num">50K+</span>
+            <span class="stat-lbl">Food Lovers</span>
+          </div>
         </div>
       </div>
-    </div>
-    <section class="about-section">
-      <div class="about-container">
-        <div class="text-container">
-          <p>
-            Whether you're a seasoned foodie or a newcomer to the city, our
-            comprehensive database of restaurant reviews and recommendations
-            caters to all tastes and preferences. With detailed information on
-            cuisine types, pricing, and local favorites, you can easily find the
-            perfect spot to satisfy your cravings, be it a cozy neighborhood
-            bistro or a high-end dining establishment.
-          </p>
-          <p>
-            Imagine strolling through the streets of a vibrant city, your palate
-            primed for adventure. With a quick search on our website, you'll
-            have access to insider tips and personal accounts from both local
-            experts and fellow travelers.
-          </p>
+
+      <div class="hero-img-side">
+        <div class="hero-glow"></div>
+        <img src="./burger_sandwich_PNG4135 2.png" alt="Delicious food" class="hero-food" />
+        <div class="float-tag ft-1">🌟 Top Rated</div>
+        <div class="float-tag ft-2">🔥 Trending Now</div>
+      </div>
+    </section>
+
+    <!-- ── MISSION ── -->
+    <section class="mission reveal">
+      <div class="two-col">
+        <div class="col-text">
+          <div class="badge">Who We Are</div>
+          <h2 class="section-title">About <span class="highlight">KimshaBuds</span></h2>
+          <p class="body-text">At Kimsha Buds, we are passionate about bringing you the best culinary experiences. Our mission is to connect you with the finest local restaurants, hidden gems, and mouthwatering recipes.</p>
+          <p class="body-text">We believe that food is not just for sustenance, but a celebration of life, culture, and community. Our team of food enthusiasts curate the most delicious and diverse offerings to satisfy your every craving.</p>
+          <div class="pills">
+            <span class="pill">🍕 Curated Reviews</span>
+            <span class="pill">🗺️ Local Gems</span>
+            <span class="pill">👨‍🍳 Expert Picks</span>
+          </div>
         </div>
-        <div class="image-container">
-          <img src="./Group 8472/Group 8472.png" alt="Your Image" />
+        <div class="col-visual">
+          <div class="stacked-cards">
+            <div class="vcard vc-main">
+              <img src="./Pizza.png" alt="Pizza" />
+              <div class="vcard-overlay">🍕 Best Pizza in Town</div>
+            </div>
+            <div class="vcard vc-side">
+              <img src="./Burger.png" alt="Burger" />
+              <div class="vcard-overlay">🍔 Gourmet Burgers</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
-    <script
-      src="https://kit.fontawesome.com/bfe768d43f.js"
-      crossorigin="anonymous"
-    ></script>
+
+    <!-- ── VALUES ── -->
+    <section class="values reveal">
+      <div class="values-inner">
+        <div class="badge">What Drives Us</div>
+        <h2 class="section-title">Our <span class="highlight">Core Values</span></h2>
+        <div class="grid4">
+          <div class="vcard2">
+            <span class="vicon">🎯</span>
+            <h3>Authenticity</h3>
+            <p>Every review is genuine — curated by real food lovers who care deeply about your experience.</p>
+          </div>
+          <div class="vcard2">
+            <span class="vicon">🌍</span>
+            <h3>Community</h3>
+            <p>We build bridges between food enthusiasts, local chefs, and restaurants across the city.</p>
+          </div>
+          <div class="vcard2">
+            <span class="vicon">✨</span>
+            <h3>Excellence</h3>
+            <p>We hold ourselves to the highest standards — only the best dining experiences make our platform.</p>
+          </div>
+          <div class="vcard2">
+            <span class="vicon">🔍</span>
+            <h3>Discovery</h3>
+            <p>Dedicated to helping you uncover hidden culinary treasures you never knew existed.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── EXPLORER ── -->
+    <section class="explorer reveal">
+      <div class="two-col flip">
+        <div class="col-text">
+          <div class="badge">Explore With Us</div>
+          <h2 class="section-title">Your City's Best <span class="highlight">Food Guide</span></h2>
+          <p class="body-text">Whether you're a seasoned foodie or a newcomer to the city, our comprehensive database of restaurant reviews caters to all tastes and preferences.</p>
+          <p class="body-text">With detailed information on cuisine types, pricing, and local favorites, you can easily find the perfect spot — from a cozy bistro to a high-end dining establishment.</p>
+          <ul class="feat-list">
+            <li><span class="chk">✔</span> Detailed cuisine &amp; pricing info</li>
+            <li><span class="chk">✔</span> Insider tips from local experts</li>
+            <li><span class="chk">✔</span> Personal accounts from fellow travelers</li>
+          </ul>
+        </div>
+        <div class="col-visual">
+          <div class="frame-wrap">
+            <div class="img-frame">
+              <img src="./image 110.png" alt="Food Explorer" />
+            </div>
+            <div class="orbit-ring"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CTA (amber background like index footer) ── -->
+    <section class="cta reveal">
+      <div class="deco-ring dr1"></div>
+      <div class="deco-ring dr2"></div>
+      <div class="cta-inner">
+        <h2 class="cta-title">Ready to Explore?</h2>
+        <p class="cta-sub">Join thousands of food lovers discovering their next favourite meal.</p>
+        <a href="javascript:void(0);" id="ctaBtn" class="cta-btn">🍴 Start Exploring</a>
+      </div>
+    </section>
+
+    <script src="https://kit.fontawesome.com/bfe768d43f.js" crossorigin="anonymous"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        var backToHomeButton = document.getElementById("backToHomeButton");
-        if (backToHomeButton) {
-          backToHomeButton.addEventListener("click", function () {
-            console.log("Back to Home button clicked"); // Debug statement
-            window.history.back();
-          });
-        } else {
-          console.log("Button not found"); // Debug statement
-        }
-      });
+      function goBack() { window.history.back(); }
+      document.getElementById('backToHomeButton').addEventListener('click', goBack);
+      document.getElementById('ctaBtn').addEventListener('click', goBack);
+
+      const observer = new IntersectionObserver(
+        entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+        { threshold: 0.12 }
+      );
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     </script>
   </body>
 </html>
